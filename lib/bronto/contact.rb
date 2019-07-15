@@ -18,6 +18,12 @@ module Bronto
       Array.wrap(resp[:return]).map { |hash| new(hash) }
     end
 
+    def self.find_by_email(email)
+      f = Bronto::Filter.new
+      f.add_filter("email", "EqualTo", email)
+      Bronto::Contact.find(f, 1, nil, true).first
+    end
+
     def self.save(*objs)
       objs = objs.flatten
       api_key = objs.first.is_a?(String) ? objs.shift : self.api_key
